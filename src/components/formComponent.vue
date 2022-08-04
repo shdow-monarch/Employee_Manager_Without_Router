@@ -216,7 +216,7 @@ export default {
           current: "",
           permanent: ""
         },
-        
+
         city: "",
         selectedState: "",
         zipCode: "",
