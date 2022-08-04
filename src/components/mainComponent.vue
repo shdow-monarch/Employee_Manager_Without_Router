@@ -1,5 +1,6 @@
 <template>
-    <div>
+    <div class="main-conatiner">
+        <div></div>
     </div>
 </template>
 <script>

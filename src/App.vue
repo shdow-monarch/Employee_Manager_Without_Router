@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <mainComponent />
+    <formComponent />
   </div>
 </template>
 <script>
