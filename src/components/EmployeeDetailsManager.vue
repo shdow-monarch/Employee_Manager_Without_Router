@@ -174,7 +174,9 @@
                     <el-form-item>
                         <el-button @click="handleCancel()">Cancel</el-button>
                         <el-button type="success" v-if="submitVisible" @click="handleSubmit()">Submit</el-button>
-                        <el-button type="primary" v-if="updateVisible" @click="handleUpdate()">Update</el-button>
+                        <el-button type="primary" v-if="updateVisible" @click="handleUpdate()">
+                            Update
+                        </el-button>
                     </el-form-item>
                 </el-form>
             </el-dialog>
@@ -192,8 +194,9 @@ export default {
     data() {
         return {
             dialogVisible: false,
-            submitVisbile: true,
-            UpdateVisible: false,
+            submitVisible: true,
+            updateVisible: false,
+            tableIndex: 0,
             states: Constants.STATE_LIST,
             skillsList: Constants.SKILL_LIST,
             departments: Constants.DEPARTMENT_LIST,
@@ -341,22 +344,43 @@ export default {
         },
         handleDialogBox() {
             this.dialogVisible = true
+            this.submitVisible = true
+            this.updateVisible = false
         },
         handleEdit(index) {
+            this.tableIndex = index
+            this.submitVisible = false
             this.dialogVisible = true
+            this.updateVisible = true
+            let tempObj = JSON.parse(JSON.stringify(this.tableData[this.tableIndex]))
+            this.pageData = Object.assign({}, tempObj)
+        },
+        handleUpdate() {
+            this.tableData[this.tableIndex] = JSON.parse(JSON.stringify(this.pageData))
 
+            let tempArray = []
+            this.tableData.forEach(item => {
+                tempArray.push(item)
+            })
+            this.tableData = []
+            tempArray.forEach(item => {
+                this.tableData.push(item)
+            })
+            this.dialogVisible = false
+            this.clearForm()
         },
         handleCancel() {
             return this.dialogVisible = false
         },
         handleDelete(index) {
-            this.tableData.splice(index, 1)
+            this.tableIndex = index
+            this.tableData.splice(this.tableIndex, 1)
+            this.clearForm()
         },
         handleSubmit() {
             this.tableData.push(this.pageData)
             this.clearForm()
             this.handleCancel()
-            return console.log(JSON.stringify(this.tableData))
         }
     }
 }
