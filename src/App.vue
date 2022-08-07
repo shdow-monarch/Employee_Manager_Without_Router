@@ -1,15 +1,16 @@
 <template>
   <div id="app">
-    <EmployeeForm />
+    <EmployeeDetailsManager />
+    <!--  <EmployeeForm />  -->
   </div>
 </template>
 <script>
-import mainComponent from './components/mainComponent.vue'
+import EmployeeDetailsManager from './components/EmployeeDetailsManager.vue'
 import EmployeeForm from './components/EmployeeForm.vue'
 export default {
   name: 'App',
   components: {
-    mainComponent,
+    EmployeeDetailsManager,
     EmployeeForm
   }
 }
