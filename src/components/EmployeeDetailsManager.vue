@@ -1,6 +1,6 @@
 <template>
     <el-row class="main-conatiner">
-        <el-row class="table-conatainer">
+        <el-row class="table-section-conatainer">
             <el-row class="header-container">
                 <h1>Employee Details Manager</h1>
             </el-row>
@@ -186,6 +186,7 @@
 <script>
 import EmployeeForm from './EmployeeForm.vue'
 import Constants from '@/constants'
+import { emitWarning } from 'process'
 export default {
     name: 'EmployeeDetailsManager',
     components: {
@@ -194,6 +195,7 @@ export default {
     data() {
         return {
             dialogVisible: false,
+            deleteDialog: false,
             submitVisible: true,
             updateVisible: false,
             tableIndex: 0,
@@ -368,19 +370,46 @@ export default {
             })
             this.dialogVisible = false
             this.clearForm()
+            this.$message({
+                type: 'info',
+                message: 'Information Updated Successfully'
+            })
         },
         handleCancel() {
             return this.dialogVisible = false
         },
         handleDelete(index) {
+            // this.deleteDialog = true
             this.tableIndex = index
-            this.tableData.splice(this.tableIndex, 1)
-            this.clearForm()
+            this.$confirm('Are you sure you want to delete this Employee Information?', 'Warning', {
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No',
+                type: 'warning',
+                center: true
+            }).then(() => {
+                this.tableData.splice(this.tableIndex, 1)
+                this.clearForm()
+                this.deleteDialog = false
+                this.$message({
+                    type: 'warning',
+                    message: 'Information Deleted'
+                })
+            }).catch(() => {
+                this.deleteDialog = false
+                this.$message({
+                    type: 'info',
+                    message: 'Delete Canceled'
+                })
+            })
         },
         handleSubmit() {
             this.tableData.push(this.pageData)
             this.clearForm()
             this.handleCancel()
+            this.$message({
+                type: 'success',
+                message: 'Information Added Successfully'
+            })
         }
     }
 }
