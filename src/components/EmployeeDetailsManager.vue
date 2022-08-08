@@ -287,40 +287,6 @@ export default {
             this.$refs['pageDataAddress'].resetFields()
             this.$refs['pageDataEmployeeDetails'].resetFields()
             this.$refs['pageDataBankDetails'].resetFields()
-
-            // this.pageData = {
-            //     firstName: '',
-            //     lastName: '',
-            //     dob: '',
-            //     gender: '',
-            //     address: {
-            //         current: '',
-            //         permanent: ''
-            //     },
-            //     city: '',
-            //     state: '',
-            //     zipCode: '',
-            //     mobile: '',
-            //     email: '',
-            //     skills: [],
-            //     employeeDetails: {
-            //         department: '',
-            //         position: '',
-            //         type: '',
-            //         salary: '',
-            //         isContract: false,
-            //         contract: {
-            //             startDate: '',
-            //             endDate: ''
-            //         }
-            //     },
-            //     bankDetails: {
-            //         bank: '',
-            //         branch: '',
-            //         accountNumber: '',
-            //         ifsc: ''
-            //     }
-            // }
         },
         handleDialogBox() {
             // this.clearForm()
@@ -380,8 +346,35 @@ export default {
                 })
             })
         },
+        handleValidation() {
+            this.$refs['pageDataBankDetails'].validate((valid) => {
+                if (valid) {
+                    return true
+                }
+                else {
+                    return false
+                }
+            })
+            this.$refs['pageDataEmployeeDetails'].validate((valid) => {
+                if (valid) {
+                    return true
+                }
+                else {
+                    return false
+                }
+            })
+            this.$refs['pageDataAddress'].validate((valid) => {
+                if (valid) {
+                    return true
+                }
+                else {
+                    return false
+                }
+            })
+        },
         handleSubmit() {
-            this.$refs['pageData', 'pageDataAddress', 'pageDataEmployeeDetails', 'pageDataBankDetails'].validate((valid) => {
+            this.handleValidation()
+            this.$refs['pageData'].validate((valid) => {
                 if (valid) {
                     let tempObj = JSON.parse(JSON.stringify(this.pageData))
                     this.tableData.push(tempObj)
@@ -401,6 +394,7 @@ export default {
         }
     }
 }
+
 </script>
 <style>
 .add-button {
