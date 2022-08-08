@@ -56,121 +56,128 @@
             </el-row>
         </el-row>
         <el-row class="form-container">
-            <el-dialog title="Add New Employee" :visible.sync="dialogVisible">
-                <el-form :ref="pageData" :model="pageData">
+            <el-dialog title="Add New Employee" :visible.sync="dialogVisible" center>
+                <el-form :ref="pageData" :rules="rules" :model="pageData">
                     <el-row class="personal-information">
                         <h4>Personal Information:</h4>
-                        <el-form-item label="First Name">
+                        <el-form-item label="First Name" prop="firstName">
                             <el-input type="text" v-model="pageData.firstName"></el-input>
                         </el-form-item>
-                        <el-form-item label="Last Name">
+                        <el-form-item label="Last Name" prop="lastName">
                             <el-input type="text" v-model="pageData.lastName"></el-input>
                         </el-form-item>
-                        <el-form-item label="Date Of Birth">
+                        <el-form-item label="Date Of Birth" prop="dob">
                             <el-date-picker type="date" v-model="pageData.dob" placeholder="Date"
                                 value-format="dd/MM/yyyy">
                             </el-date-picker>
                         </el-form-item>
-                        <el-form-item label="Gender">
+                        <el-form-item label="Gender" prop="gender">
                             <el-radio-group v-model="pageData.gender">
                                 <el-radio label="male">Male</el-radio>
                                 <el-radio label="female">Female</el-radio>
                             </el-radio-group>
                         </el-form-item>
-                        <el-form-item label="Mobile No.">
-                            <el-input type="text" v-model="pageData.mobile" maxlength="10">
+                        <el-form-item label="Mobile No." prop="mobile">
+                            <el-input type="text" v-model.number="pageData.mobile">
                                 <template slot="prepend">+91</template>
                             </el-input>
                         </el-form-item>
-                        <el-form-item label="Email">
+                        <el-form-item label="Email" prop="email">
                             <el-input type="text" v-model="pageData.email"></el-input>
                         </el-form-item>
-                        <el-form-item label="Current Address">
-                            <el-input type="textarea" v-model="pageData.address.current" placeholder="Address">
-                            </el-input>
-                        </el-form-item>
-                        <el-form-item label="Permanent Address">
-                            <el-input type="textarea" v-model="pageData.address.permanent" placeholder="Address">
-                            </el-input>
-                        </el-form-item>
-                        <el-form-item label="City">
+                        <el-form ref="pageData" :rules="rules" :model="pageData.address">
+                            <el-form-item label="Current Address" prop="current">
+                                <el-input type="textarea" v-model="pageData.address.current" placeholder="Address">
+                                </el-input>
+                            </el-form-item>
+                            <el-form-item label="Permanent Address" prop="permanent">
+                                <el-input type="textarea" v-model="pageData.address.permanent" placeholder="Address">
+                                </el-input>
+                            </el-form-item>
+                        </el-form>
+                        <el-form-item label="City" prop="city">
                             <el-input type="text" v-model="pageData.city"></el-input>
                         </el-form-item>
-                        <el-form-item label="State">
+                        <el-form-item label="State" prop="state">
                             <el-select v-model="pageData.state" placeholder="State">
                                 <el-option v-for="(item, index) in states" :key="index" :value="item" :label="item">
                                 </el-option>
                             </el-select>
                         </el-form-item>
-                        <el-form-item label="Zip Code">
+                        <el-form-item label="Zip Code" prop="zipCode">
                             <el-input type="text" v-model="pageData.zipCode"></el-input>
                         </el-form-item>
-                        <el-form-item label="Skills">
+                        <el-form-item label="Skills" prop="skills">
                             <el-select v-model="pageData.skills" multiple placeholder=" Select">
                                 <el-option v-for="(item, index) in skillsList" :key="index" :value="item" :label="item">
                                 </el-option>
                             </el-select>
                         </el-form-item>
                     </el-row>
-                    <el-row class="employee-details">
-                        <h4>Employee Details:</h4>
-                        <el-form-item label="Department">
-                            <el-select placeholder="Select" v-model="pageData.employeeDetails.department">
-                                <el-option v-for="(item, index) in departments" :key="index" :value="item"
-                                    :label="item">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="Position">
-                            <el-select v-model="pageData.employeeDetails.position" placeholder="Select">
-                                <el-option v-for="(item, index) in positions" :key="index" :value="item" :label="item">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="Employee Type">
-                            <el-select v-model="pageData.employeeDetails.type" placeholder="Select">
-                                <el-option v-for="(item, index) in types" :key="index" :value="item" :label="item">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="Salary">
-                            <el-input v-model="pageData.employeeDetails.salary" type="text">
-                                <template slot="append">PA</template>
-                            </el-input>
-                        </el-form-item>
-                        <el-form-item label="is Contract">
-                            <el-switch v-model="pageData.employeeDetails.isContract" active-color="#13ce66"
-                                inactive-color="#ff4949">
-                            </el-switch>
-                        </el-form-item>
-                        <el-row v-if="pageData.employeeDetails.isContract" class="is-contract">
-                            <el-form-item label="From">
-                                <el-date-picker type="date" v-model="pageData.employeeDetails.contract.startDate"
-                                    placeholder="Join Date" value-format="dd/MM/yyyy">
-                                </el-date-picker>
+                    <el-form ref="pageData" :rules="rules" :model="pageData.employeeDetails">
+                        <el-row class="employee-details">
+                            <h4>Employee Details:</h4>
+                            <el-form-item label="Department" prop="department">
+                                <el-select placeholder="Select" v-model="pageData.employeeDetails.department">
+                                    <el-option v-for="(item, index) in departments" :key="index" :value="item"
+                                        :label="item">
+                                    </el-option>
+                                </el-select>
                             </el-form-item>
-                            <el-form-item label="To">
-                                <el-date-picker type="date" v-model="pageData.employeeDetails.contract.endDate"
-                                    placeholder="End Date" value-format="dd/MM/yyyy">
-                                </el-date-picker>
+                            <el-form-item label="Position" prop="position">
+                                <el-select v-model="pageData.employeeDetails.position" placeholder="Select">
+                                    <el-option v-for="(item, index) in positions" :key="index" :value="item"
+                                        :label="item">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="Employee Type" prop="type">
+                                <el-select v-model="pageData.employeeDetails.type" placeholder="Select">
+                                    <el-option v-for="(item, index) in types" :key="index" :value="item" :label="item">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="Salary" prop="salary">
+                                <el-input v-model.number="pageData.employeeDetails.salary" type="text">
+                                    <template slot="append">PA</template>
+                                </el-input>
+                            </el-form-item>
+                            <el-form-item label="is Contract">
+                                <el-switch v-model="pageData.employeeDetails.isContract" active-color="#13ce66"
+                                    inactive-color="#ff4949">
+                                </el-switch>
+                            </el-form-item>
+                            <el-row v-if="pageData.employeeDetails.isContract" class="is-contract">
+                                <el-form-item label="From">
+                                    <el-date-picker type="date" v-model="pageData.employeeDetails.contract.startDate"
+                                        placeholder="Join Date" value-format="dd/MM/yyyy">
+                                    </el-date-picker>
+                                </el-form-item>
+                                <el-form-item label="To">
+                                    <el-date-picker type="date" v-model="pageData.employeeDetails.contract.endDate"
+                                        placeholder="End Date" value-format="dd/MM/yyyy">
+                                    </el-date-picker>
+                                </el-form-item>
+                            </el-row>
+                        </el-row>
+                    </el-form>
+                    <el-form ref="pageData" :rules="rules" :model="pageData.bankDetails">
+                        <el-row class="bank-details">
+                            <h4>Bank Details:</h4>
+                            <el-form-item label="Bank Name" prop="bank">
+                                <el-input v-model="pageData.bankDetails.bank" type="text"></el-input>
+                            </el-form-item>
+                            <el-form-item label=" Branch Name" prop="branch">
+                                <el-input type="text" v-model="pageData.bankDetails.branch"></el-input>
+                            </el-form-item>
+                            <el-form-item label="Account Number" prop="accountNumber">
+                                <el-input type="text" v-model.number="pageData.bankDetails.accountNumber"></el-input>
+                            </el-form-item>
+                            <el-form-item label="IFSC Code" prop="ifsc">
+                                <el-input type="text" v-model="pageData.bankDetails.ifsc"></el-input>
                             </el-form-item>
                         </el-row>
-                    </el-row>
-                    <el-row class="bank-details">
-                        <h4>Bank Details:</h4>
-                        <el-form-item label="Bank Name">
-                            <el-input v-model="pageData.bankDetails.bank" type="text"></el-input>
-                        </el-form-item>
-                        <el-form-item label=" Branch Name">
-                            <el-input type="text" v-model="pageData.bankDetails.branch"></el-input>
-                        </el-form-item>
-                        <el-form-item label="Account Number">
-                            <el-input type="text" v-model="pageData.bankDetails.accountNumber"></el-input>
-                        </el-form-item>
-                        <el-form-item label="IFSC Code">
-                            <el-input type="text" v-model="pageData.bankDetails.ifsc"></el-input>
-                        </el-form-item>
-                    </el-row>
+                    </el-form>
                     <el-form-item>
                         <el-button @click="handleCancel()">Cancel</el-button>
                         <el-button type="success" v-if="submitVisible" @click="handleSubmit()">Submit</el-button>
@@ -186,7 +193,6 @@
 <script>
 import EmployeeForm from './EmployeeForm.vue'
 import Constants from '@/constants'
-import { emitWarning } from 'process'
 export default {
     name: 'EmployeeDetailsManager',
     components: {
@@ -237,73 +243,72 @@ export default {
                     ifsc: ''
                 }
             },
-            // rules: {
-            //   firstName: [
-            //     { required: true, message: 'First Name is Required', trigger: 'blur' }
-            //   ],
-            //   lastName: [
-            //     { required: true, message: 'Last Name is Required', trigger: 'blur' }
-            //   ],
-            //   dob: [
-            //     { required: true, type: 'date', message: 'Date of Birth is Required', trigger: 'change' }
-            //   ],
-            //   gender: [
-            //     { required: true, message: 'Gender is Required', trigger: 'change' }
-            //   ],
-            //   currentAddress: [
-            //     { required: true, message: 'Current Address is Required', trigger: 'blur' }
-            //   ],
-            //   permanentAddress: [
-            //     { required: true, message: 'Permanent Address is Required', trigger: 'blur' }
-            //   ],
-            //   city: [
-            //     { required: true, message: 'City is Required', trigger: 'blur' }
-            //   ],
-            //   state: [
-            //     { required: true, message: 'State is Required', trigger: 'change' }
-            //   ],
-            //   zipCode: [
-            //     { required: true, message: 'Zipcode is Required', trigger: 'blur' },
-            //     { type: 'number', message: 'Zipcode must be a number', trigger: 'blur' },
-            //   ],
-            //   mobile: [
-            //     { required: true, message: 'Mobile number is required', trigger: 'blur' },
-            //     { type: 'number', min: 10, message: 'Mobile number should atleast be 10 digits', trigger: 'blur' },
-            //     { type: 'number', message: 'Mobile number should be a number', trigger: 'blur' },
-            //   ],
-            //   email: [
-            //     { required: true, message: 'Email is Required', trigger: 'blur' },
-            //     { type: 'email', message: 'Enter a Valid Email {for example abc@gmail.com}', trigger: 'blur' }
-            //   ],
-            //   skills: [
-            //     { required: true, type: 'array', message: 'Atleast select one skill', trigger: 'change' }
-            //   ],
-            //   department: [
-            //     { required: true, message: 'Department is Required', trigger: 'change' }
-            //   ],
-            //   position: [
-            //     { required: true, message: 'Position is Required', trigger: 'change' }
-            //   ],
-            //   type: [
-            //     { required: true, message: 'Employee Type is Required', trigger: 'change' }
-            //   ],
-            //   salary: {
-            //     required: true, type: 'number', message: 'Salary is Required', trigger: 'blur'
-            //   },
-            //   bank: [
-            //     { required: true, message: 'Bank Name is Required', trigger: 'blur' }
-            //   ],
-            //   branch: [
-            //     { required: true, message: 'Branch Name is Required', trigger: 'blur' }
-            //   ],
-            //   accountNumber: [
-            //     { required: true, type: 'number', message: 'Account Number is Required', trigger: 'blur' },
-            //     { type: 'number', message: 'Account number must be a number', trigger: 'blur' }
-            //   ],
-            //   ifsc: [
-            //     { required: true, message: 'IFSC Code is Required', trigger: 'blur' }
-            //   ]
-            // },
+            rules: {
+                firstName: [
+                    { required: true, message: 'First Name is Required', trigger: 'blur' }
+                ],
+                lastName: [
+                    { required: true, message: 'Last Name is Required', trigger: 'blur' }
+                ],
+                dob: [
+                    { required: true, type: 'date', message: 'Date of Birth is Required', trigger: 'change' }
+                ],
+                gender: [
+                    { required: true, message: 'Gender is Required', trigger: 'change' }
+                ],
+                current: [
+                    { required: true, message: 'Current Address is Required', trigger: 'blur' }
+                ],
+                permanent: [
+                    { required: true, message: 'Permanent Address is Required', trigger: 'blur' }
+                ],
+                city: [
+                    { required: true, message: 'City is Required', trigger: 'blur' }
+                ],
+                state: [
+                    { required: true, message: 'State is Required', trigger: 'change' }
+                ],
+                zipCode: [
+                    { required: true, message: 'Zipcode is Required', trigger: 'blur' },
+                    { pattern: /^(\d{6})$/, message: 'Enter a valid zipcode', trigger: 'blur' },
+                ],
+                mobile: [
+                    { required: true, message: 'Mobile number is required', trigger: 'blur' },
+                    { pattern: /\D*([2-9]\d{2})(\D*)([2-9]\d{2})(\D*)(\d{4})\D*/, message: 'Enter a Valid Number', trigger: 'blur' },
+                ],
+                email: [
+                    { required: true, message: 'Email is Required', trigger: 'blur' },
+                    { pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, message: 'Enter a Valid Email {for example abc@gmail.com}', trigger: 'blur' }
+                ],
+                skills: [
+                    { required: true, type: 'array', message: 'Atleast select one skill', trigger: 'change' }
+                ],
+                department: [
+                    { required: true, message: 'Department is Required', trigger: 'change' }
+                ],
+                position: [
+                    { required: true, message: 'Position is Required', trigger: 'change' }
+                ],
+                type: [
+                    { required: true, message: 'Employee Type is Required', trigger: 'change' }
+                ],
+                salary: {
+                    required: true, type: 'number', message: 'Salary is Required', trigger: 'blur'
+                },
+                bank: [
+                    { required: true, message: 'Bank Name is Required', trigger: 'blur' }
+                ],
+                branch: [
+                    { required: true, message: 'Branch Name is Required', trigger: 'blur' }
+                ],
+                accountNumber: [
+                    { required: true, type: 'number', message: 'Account Number is Required', trigger: 'blur' },
+                    { type: 'number', message: 'Account number must be a number', trigger: 'blur' }
+                ],
+                ifsc: [
+                    { required: true, message: 'IFSC Code is Required', trigger: 'blur' }
+                ]
+            },
             tableData: []
         }
     },
