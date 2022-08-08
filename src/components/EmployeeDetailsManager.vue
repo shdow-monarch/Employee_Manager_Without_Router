@@ -59,7 +59,7 @@
         </el-row>
         <el-row class="form-container">
             <el-dialog title="Add New Employee" :visible.sync="dialogVisible" center>
-                <el-form :ref="pageData" :rules="rules" :model="pageData">
+                <el-form ref="pageData" :rules="rules" :model="pageData">
                     <el-row class="personal-information">
                         <h4>Personal Information:</h4>
                         <el-form-item label="First Name" prop="firstName">
@@ -254,7 +254,7 @@ export default {
                     { required: true, message: 'Last Name is Required', trigger: 'blur' }
                 ],
                 dob: [
-                    { required: true, type: 'date', message: 'Date of Birth is Required', trigger: 'change' }
+                    { required: true, message: 'Date of Birth is Required', trigger: 'change' }
                 ],
                 gender: [
                     { required: true, message: 'Gender is Required', trigger: 'change' }
@@ -318,7 +318,7 @@ export default {
     },
     methods: {
         clearForm() {
-            // this.$refs.pageData.resetFields()
+            // this.$refs['pageData'].resetFields()
             this.pageData = {
                 firstName: '',
                 lastName: '',
@@ -412,7 +412,6 @@ export default {
             })
         },
         handleSubmit() {
-
             this.$refs['pageData'].validate((valid) => {
                 if (valid) {
                     this.tableData.push(this.pageData)
