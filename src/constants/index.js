@@ -31,12 +31,12 @@ const CONSTANTS = {
     'West Bengal'
   ],
   SKILL_LIST: [
-    'Java',
-    'Python',
-    'JavaScript',
-    'Vue.js',
-    'Node.js',
-    'Nuxt.js'
+    { displayName: 'Java', name: 'java' },
+    { displayName: 'Python', name: 'python' },
+    { displayName: 'Javascript', name: 'javascript' },
+    { displayName: 'Vue.js', name: 'vue.js' },
+    { displayName: 'Node.js', name: 'node.js' },
+    { displayName: 'Nuxt.js', name: 'nuxt.js' }
   ],
   DEPARTMENT_LIST: [
     'Quality Analyst',
@@ -54,6 +54,39 @@ const CONSTANTS = {
   EMPLOYEE_TYPE_LIST: [
     'Full Time',
     'Part Time'
-  ]
+  ],
+  EMPLOYEE_DETAIL: {
+    firstName: '',
+    lastName: '',
+    dob: '',
+    gender: '',
+    address: {
+      current: '',
+      permanent: ''
+    },
+    city: '',
+    state: '',
+    zipCode: '',
+    mobile: '',
+    email: '',
+    skills: [],
+    employeeDetails: {
+      department: '',
+      position: '',
+      type: '',
+      salary: '',
+      isContract: false,
+      contract: {
+        startDate: '',
+        endDate: ''
+      }
+    },
+    bankDetails: {
+      bank: '',
+      branch: '',
+      accountNumber: '',
+      ifsc: ''
+    }
+  }
 }
 export default CONSTANTS

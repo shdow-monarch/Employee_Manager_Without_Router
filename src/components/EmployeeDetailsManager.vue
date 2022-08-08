@@ -32,6 +32,8 @@
                         <el-table-column label="Employee Type" prop="employeeDetails.type" width="180">
                         </el-table-column>
                         <el-table-column label="Salary" prop="employeeDetails.salary" width="180"></el-table-column>
+                        <el-table-column label="Is Contract" prop="employeeDetails.isContract" width="180">
+                        </el-table-column>
                         <el-table-column label="Start Date" prop="employeeDetails.contract.startDate" width="180">
                         </el-table-column>
                         <el-table-column label="End Date" prop="employeeDetails.contract.endDate" width="180">
@@ -109,7 +111,8 @@
                         </el-form-item>
                         <el-form-item label="Skills" prop="skills">
                             <el-select v-model="pageData.skills" multiple placeholder=" Select">
-                                <el-option v-for="(item, index) in skillsList" :key="index" :value="item" :label="item">
+                                <el-option v-for="(item, index) in skillsList" :key="index" :value="item.name"
+                                    :label="item.displayName">
                                 </el-option>
                             </el-select>
                         </el-form-item>
@@ -207,39 +210,7 @@ export default {
             departments: Constants.DEPARTMENT_LIST,
             positions: Constants.POSITION_LIST,
             types: Constants.EMPLOYEE_TYPE_LIST,
-            pageData: {
-                firstName: '',
-                lastName: '',
-                dob: '',
-                gender: '',
-                address: {
-                    current: '',
-                    permanent: ''
-                },
-                city: '',
-                state: '',
-                zipCode: '',
-                mobile: '',
-                email: '',
-                skills: [],
-                employeeDetails: {
-                    department: '',
-                    position: '',
-                    type: '',
-                    salary: '',
-                    isContract: false,
-                    contract: {
-                        startDate: '',
-                        endDate: ''
-                    }
-                },
-                bankDetails: {
-                    bank: '',
-                    branch: '',
-                    accountNumber: '',
-                    ifsc: ''
-                }
-            },
+            pageData: Constants.EMPLOYEE_DETAIL,
             rules: {
                 firstName: [
                     { required: true, message: 'First Name is Required', trigger: 'blur' }
@@ -248,7 +219,7 @@ export default {
                     { required: true, message: 'Last Name is Required', trigger: 'blur' }
                 ],
                 dob: [
-                    { required: true, message: 'Date of Birth is Required', trigger: 'change' }
+                    { required: true, message: 'Date of Birth is Required' }
                 ],
                 gender: [
                     { required: true, message: 'Gender is Required', trigger: 'change' }
@@ -304,7 +275,7 @@ export default {
                 ],
                 ifsc: [
                     { required: true, message: 'IFSC Code is Required', trigger: 'blur' },
-                    { pattern: /^[A-Z]{4}0[A-Z0-9]{6}$/, message: 'Enter a valid IFSC Code' }
+                    { pattern: /^[A-Z]{4}0[A-Z0-9]{6}$/, message: 'Enter a valid IFSC Code', trigger: 'blur' }
                 ]
             },
             tableData: []
@@ -312,47 +283,53 @@ export default {
     },
     methods: {
         clearForm() {
-            // this.$refs['pageData'].resetFields()
-            this.pageData = {
-                firstName: '',
-                lastName: '',
-                dob: '',
-                gender: '',
-                address: {
-                    current: '',
-                    permanent: ''
-                },
-                city: '',
-                state: '',
-                zipCode: '',
-                mobile: '',
-                email: '',
-                skills: [],
-                employeeDetails: {
-                    department: '',
-                    position: '',
-                    type: '',
-                    salary: '',
-                    isContract: false,
-                    contract: {
-                        startDate: '',
-                        endDate: ''
-                    }
-                },
-                bankDetails: {
-                    bank: '',
-                    branch: '',
-                    accountNumber: '',
-                    ifsc: ''
-                }
-            }
+            this.$refs['pageData'].resetFields()
+            this.$refs['pageDataAddress'].resetFields()
+            this.$refs['pageDataEmployeeDetails'].resetFields()
+            this.$refs['pageDataBankDetails'].resetFields()
+
+            // this.pageData = {
+            //     firstName: '',
+            //     lastName: '',
+            //     dob: '',
+            //     gender: '',
+            //     address: {
+            //         current: '',
+            //         permanent: ''
+            //     },
+            //     city: '',
+            //     state: '',
+            //     zipCode: '',
+            //     mobile: '',
+            //     email: '',
+            //     skills: [],
+            //     employeeDetails: {
+            //         department: '',
+            //         position: '',
+            //         type: '',
+            //         salary: '',
+            //         isContract: false,
+            //         contract: {
+            //             startDate: '',
+            //             endDate: ''
+            //         }
+            //     },
+            //     bankDetails: {
+            //         bank: '',
+            //         branch: '',
+            //         accountNumber: '',
+            //         ifsc: ''
+            //     }
+            // }
         },
         handleDialogBox() {
+            // this.clearForm()
             this.dialogVisible = true
             this.submitVisible = true
             this.updateVisible = false
         },
         handleEdit(index) {
+            this.clearForm()
             this.tableIndex = index
             this.submitVisible = false
             this.dialogVisible = true
@@ -379,19 +356,17 @@ export default {
             })
         },
         handleCancel() {
-            this.clearForm()
             return this.dialogVisible = false
         },
         handleDelete(index) {
             this.tableIndex = index
-            this.$confirm('Are you sure you want to delete this Employee Information?', 'Warning', {
+            this.$confirm('Are you sure you want to delete this employee information?', 'Warning', {
                 confirmButtonText: 'Yes',
                 cancelButtonText: 'No',
                 type: 'warning',
                 center: true
             }).then(() => {
                 this.tableData.splice(this.tableIndex, 1)
-                this.clearForm()
                 this.deleteDialog = false
                 this.$message({
                     type: 'warning',
@@ -406,10 +381,13 @@ export default {
             })
         },
         handleSubmit() {
-            this.$refs['pageData'].validate((valid) => {
+            this.$refs['pageData', 'pageDataAddress', 'pageDataEmployeeDetails', 'pageDataBankDetails'].validate((valid) => {
                 if (valid) {
-                    this.tableData.push(this.pageData)
+                    let tempObj = JSON.parse(JSON.stringify(this.pageData))
+                    this.tableData.push(tempObj)
+                    tempObj = {}
                     this.handleCancel()
+                    this.clearForm()
                     this.$message({
                         type: 'success',
                         message: 'Information Added Successfully'
@@ -420,7 +398,6 @@ export default {
                     return false;
                 }
             })
-            this.clearForm()
         }
     }
 }
