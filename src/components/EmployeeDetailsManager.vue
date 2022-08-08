@@ -32,8 +32,6 @@
                         <el-table-column label="Employee Type" prop="employeeDetails.type" width="180">
                         </el-table-column>
                         <el-table-column label="Salary" prop="employeeDetails.salary" width="180"></el-table-column>
-                        <el-table-column label="Is Contract" prop="employeeDetails.isContract" width="180">
-                        </el-table-column>
                         <el-table-column label="Start Date" prop="employeeDetails.contract.startDate" width="180">
                         </el-table-column>
                         <el-table-column label="End Date" prop="employeeDetails.contract.endDate" width="180">
@@ -87,7 +85,7 @@
                         <el-form-item label="Email" prop="email">
                             <el-input type="text" v-model="pageData.email"></el-input>
                         </el-form-item>
-                        <el-form ref="pageData" :rules="rules" :model="pageData.address">
+                        <el-form ref="pageDataAddress" :rules="rules" :model="pageData.address">
                             <el-form-item label="Current Address" prop="current">
                                 <el-input type="textarea" v-model="pageData.address.current" placeholder="Address">
                                 </el-input>
@@ -116,7 +114,7 @@
                             </el-select>
                         </el-form-item>
                     </el-row>
-                    <el-form ref="pageData" :rules="rules" :model="pageData.employeeDetails">
+                    <el-form ref="pageDataEmployeeDetails" :rules="rules" :model="pageData.employeeDetails">
                         <el-row class="employee-details">
                             <h4>Employee Details:</h4>
                             <el-form-item label="Department" prop="department">
@@ -163,7 +161,7 @@
                             </el-row>
                         </el-row>
                     </el-form>
-                    <el-form ref="pageData" :rules="rules" :model="pageData.bankDetails">
+                    <el-form ref="pageDataBankDetails" :rules="rules" :model="pageData.bankDetails">
                         <el-row class="bank-details">
                             <h4>Bank Details:</h4>
                             <el-form-item label="Bank Name" prop="bank">
@@ -194,13 +192,9 @@
     </el-row>
 </template>
 <script>
-import EmployeeForm from './EmployeeForm.vue'
 import Constants from '@/constants'
 export default {
     name: 'EmployeeDetailsManager',
-    components: {
-        EmployeeForm
-    },
     data() {
         return {
             dialogVisible: false,
@@ -385,10 +379,10 @@ export default {
             })
         },
         handleCancel() {
+            this.clearForm()
             return this.dialogVisible = false
         },
         handleDelete(index) {
-            // this.deleteDialog = true
             this.tableIndex = index
             this.$confirm('Are you sure you want to delete this Employee Information?', 'Warning', {
                 confirmButtonText: 'Yes',
@@ -415,28 +409,18 @@ export default {
             this.$refs['pageData'].validate((valid) => {
                 if (valid) {
                     this.tableData.push(this.pageData)
-                    this.clearForm()
                     this.handleCancel()
                     this.$message({
                         type: 'success',
                         message: 'Information Added Successfully'
                     })
+                    return true
                 } else {
                     console.log('error submit!!');
                     return false;
                 }
             })
-
-
-
-
-            // this.tableData.push(this.pageData)
-            // this.clearForm()
-            // this.handleCancel()
-            // this.$message({
-            //     type: 'success',
-            //     message: 'Information Added Successfully'
-            // })
+            this.clearForm()
         }
     }
 }
