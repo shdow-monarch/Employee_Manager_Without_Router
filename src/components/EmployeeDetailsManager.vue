@@ -32,6 +32,8 @@
                         <el-table-column label="Employee Type" prop="employeeDetails.type" width="180">
                         </el-table-column>
                         <el-table-column label="Salary" prop="employeeDetails.salary" width="180"></el-table-column>
+                        <el-table-column label="Is Contract" prop="employeeDetails.isContract" width="180">
+                        </el-table-column>
                         <el-table-column label="Start Date" prop="employeeDetails.contract.startDate" width="180">
                         </el-table-column>
                         <el-table-column label="End Date" prop="employeeDetails.contract.endDate" width="180">
@@ -171,7 +173,8 @@
                                 <el-input type="text" v-model="pageData.bankDetails.branch"></el-input>
                             </el-form-item>
                             <el-form-item label="Account Number" prop="accountNumber">
-                                <el-input type="text" v-model.number="pageData.bankDetails.accountNumber"></el-input>
+                                <el-input type="text" v-model.number="pageData.bankDetails.accountNumber"
+                                    maxlength="18"></el-input>
                             </el-form-item>
                             <el-form-item label="IFSC Code" prop="ifsc">
                                 <el-input type="text" v-model="pageData.bankDetails.ifsc"></el-input>
@@ -302,11 +305,12 @@ export default {
                     { required: true, message: 'Branch Name is Required', trigger: 'blur' }
                 ],
                 accountNumber: [
-                    { required: true, type: 'number', message: 'Account Number is Required', trigger: 'blur' },
-                    { type: 'number', message: 'Account number must be a number', trigger: 'blur' }
+                    { required: true, message: 'Account Number is Required', trigger: 'blur' },
+                    { type: 'number', minlength: 9, message: 'Enter a valid account number', trigger: 'blur' }
                 ],
                 ifsc: [
-                    { required: true, message: 'IFSC Code is Required', trigger: 'blur' }
+                    { required: true, message: 'IFSC Code is Required', trigger: 'blur' },
+                    { pattern: /^[A-Z]{4}0[A-Z0-9]{6}$/, message: 'Enter a valid IFSC Code' }
                 ]
             },
             tableData: []
@@ -316,36 +320,36 @@ export default {
         clearForm() {
             // this.$refs.pageData.resetFields()
             this.pageData = {
-                firstName: "",
-                lastName: "",
-                dob: "",
-                gender: "",
+                firstName: '',
+                lastName: '',
+                dob: '',
+                gender: '',
                 address: {
-                    current: "",
-                    permanent: ""
+                    current: '',
+                    permanent: ''
                 },
-                city: "",
-                state: "",
-                zipCode: "",
-                mobile: "",
-                email: "",
+                city: '',
+                state: '',
+                zipCode: '',
+                mobile: '',
+                email: '',
                 skills: [],
                 employeeDetails: {
-                    department: "",
-                    position: "",
-                    type: "",
-                    salary: "",
-                    dateOfJoining: "",
+                    department: '',
+                    position: '',
+                    type: '',
+                    salary: '',
+                    isContract: false,
                     contract: {
-                        startDate: "",
-                        endDate: ""
+                        startDate: '',
+                        endDate: ''
                     }
                 },
                 bankDetails: {
-                    bank: "",
-                    branch: "",
-                    accountNumber: "",
-                    ifsc: ""
+                    bank: '',
+                    branch: '',
+                    accountNumber: '',
+                    ifsc: ''
                 }
             }
         },
@@ -408,13 +412,32 @@ export default {
             })
         },
         handleSubmit() {
-            this.tableData.push(this.pageData)
-            this.clearForm()
-            this.handleCancel()
-            this.$message({
-                type: 'success',
-                message: 'Information Added Successfully'
+
+            this.$refs['pageData'].validate((valid) => {
+                if (valid) {
+                    this.tableData.push(this.pageData)
+                    this.clearForm()
+                    this.handleCancel()
+                    this.$message({
+                        type: 'success',
+                        message: 'Information Added Successfully'
+                    })
+                } else {
+                    console.log('error submit!!');
+                    return false;
+                }
             })
+
+
+
+
+            // this.tableData.push(this.pageData)
+            // this.clearForm()
+            // this.handleCancel()
+            // this.$message({
+            //     type: 'success',
+            //     message: 'Information Added Successfully'
+            // })
         }
     }
 }
