@@ -1,9 +1,3 @@
 Doubts:
 
-1. How to fix after submition of new employee info, again try to add new employee, form input fields are not refreshed.
-
-2. Is contract value (true or false) are not showing in the table.
-
-3. How to validate multiple refname (for nested forms) inside submithandle() method.
-
-4. How to mount localstorage in created or mounted lifecycle for displaying tableData.
+1. Is contract value (true or false) are not showing in the table.
