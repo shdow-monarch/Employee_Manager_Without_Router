@@ -281,6 +281,9 @@ export default {
             tableData: []
         }
     },
+    mounted() {
+        this.tableData = JSON.parse(localStorage.getItem("localStorageTableData")) || []
+    },
     methods: {
         clearForm() {
             this.$refs['pageData'].resetFields()
@@ -305,7 +308,6 @@ export default {
         },
         handleUpdate() {
             this.tableData[this.tableIndex] = JSON.parse(JSON.stringify(this.pageData))
-
             let tempArray = []
             this.tableData.forEach(item => {
                 tempArray.push(item)
@@ -314,6 +316,8 @@ export default {
             tempArray.forEach(item => {
                 this.tableData.push(item)
             })
+            localStorage.clear()
+            localStorage.setItem("localStorageTableData", JSON.stringify(this.tableData))
             this.dialogVisible = false
             this.clearForm()
             this.$message({
@@ -333,6 +337,8 @@ export default {
                 center: true
             }).then(() => {
                 this.tableData.splice(this.tableIndex, 1)
+                localStorage.clear()
+                localStorage.setItem("localStorageTableData", JSON.stringify(this.tableData))
                 this.deleteDialog = false
                 this.$message({
                     type: 'warning',
@@ -378,6 +384,7 @@ export default {
                 if (valid) {
                     let tempObj = JSON.parse(JSON.stringify(this.pageData))
                     this.tableData.push(tempObj)
+                    localStorage.setItem("localStorageTableData", JSON.stringify(this.tableData))
                     tempObj = {}
                     this.handleCancel()
                     this.clearForm()
