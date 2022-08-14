@@ -1,14 +1,17 @@
 <template>
-  <div id="app">
-    <EmployeeDetailsManager />
-  </div>
+  <el-row id="app">
+    <employeeList />
+    <!-- <EmployeeDetailsManager /> -->
+  </el-row>
 </template>
 <script>
-import EmployeeDetailsManager from './components/EmployeeDetailsManager.vue'
+import employeeList from './components/employeeList.vue'
+// import EmployeeDetailsManager from './components/EmployeeDetailsManager.vue'
 export default {
   name: 'App',
   components: {
-    EmployeeDetailsManager
+    // EmployeeDetailsManager,
+    employeeList
   }
 }
 </script>

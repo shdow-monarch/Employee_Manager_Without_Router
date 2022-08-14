@@ -56,6 +56,7 @@ const CONSTANTS = {
     'Part Time'
   ],
   EMPLOYEE_DETAIL: {
+    _id: '',
     firstName: '',
     lastName: '',
     dob: '',
@@ -69,11 +70,11 @@ const CONSTANTS = {
     zipCode: '',
     mobile: '',
     email: '',
-    skills: [],
     employeeDetails: {
       department: '',
       position: '',
       type: '',
+      skills: [],
       salary: '',
       isContract: false,
       contract: {
