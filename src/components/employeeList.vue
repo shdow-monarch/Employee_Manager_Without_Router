@@ -97,16 +97,16 @@ export default {
       this.$message({ type: 'info', message: 'Action was canceled' })
     },
     handleSaveClick(formData) {
-      if (formData._id === this.tableData.find((item) => { item._id })) {
-        this.$message({ type: 'employee information already exist' })
-      }
-      else {
+      if (formData._id !== this.tableData.find((item) => { item._id })) {
         this.tableData.push(formData)
         localStorage.setItem('employeeList', JSON.stringify(this.tableData))
         this.isDialog = false
         this.$message({
           type: 'success', message: 'Employee information added successfully'
         })
+      }
+      else {
+        this.$message({ type: 'info', message: 'employee information already exist' })
       }
     },
     handleDeleteClick(id) {
@@ -131,7 +131,7 @@ export default {
     },
     handleEditClick(id) {
       this.id = id
-      this.tableData.forEach((item) => {
+      this.tableData.find((item) => {
         if (item._id === this.id) {
           this.record = item
           this.isDialog = true

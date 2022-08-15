@@ -140,94 +140,23 @@ export default {
     }
   },
   mounted() {
-    if (Object.keys(this.record).length !== 0) {
-      this.formData = this.record
-    }
+    if (!_.isEmpty(this.record._id)) { this.formData = this.record }
   },
   data() {
     return {
-      isSubmit: (Object.keys(this.record).length === 0) ? true : false,
+      isSubmit: (_.isEmpty(this.record._id)) ? true : false,
       states: Constants.STATE_LIST,
       skillsList: Constants.SKILL_LIST,
       departments: Constants.DEPARTMENT_LIST,
       positions: Constants.POSITION_LIST,
       types: Constants.EMPLOYEE_TYPE_LIST,
       formData: Constants.EMPLOYEE_DETAIL,
-      formRules: {
-        firstName: [
-          { required: true, message: 'First Name is required', trigger: 'blur' }
-        ],
-        lastName: [
-          { required: true, message: 'Last Name is required', trigger: 'blur' }
-        ],
-        dob: [
-          { required: true, message: 'Date of Birth is required' }
-        ],
-        gender: [
-          { required: true, message: 'Gender is required', trigger: 'change' }
-        ],
-        'address.current': [
-          { required: true, message: 'Current Address is required', trigger: 'blur' }
-        ],
-        'address.permanent': [
-          { required: true, message: 'Permanent Address is required', trigger: 'blur' }
-        ],
-        city: [
-          { required: true, message: 'City is required', trigger: 'blur' }
-        ],
-        state: [
-          { required: true, message: 'State is required', trigger: 'change' }
-        ],
-        zipCode: [
-          { required: true, message: 'Zipcode is required', trigger: 'blur' },
-          { pattern: /^(\d{6})$/, message: 'Enter a valid zipcode', trigger: 'blur' },
-        ],
-        mobile: [
-          { required: true, message: 'Mobile number is required', trigger: 'blur' },
-          { pattern: /\D*([2-9]\d{2})(\D*)([2-9]\d{2})(\D*)(\d{4})\D*/, message: 'Enter a Valid Number', trigger: 'blur' },
-        ],
-        email: [
-          { required: true, message: 'Email is required', trigger: 'blur' },
-          { pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, message: 'Enter a Valid Email {for example abc@gmail.com}', trigger: 'blur' }
-        ],
-        'employeeDetails.department': [
-          { required: true, message: 'Department is required', trigger: 'change' }
-        ],
-        'employeeDetails.position': [
-          { required: true, message: 'Position is required', trigger: 'change' }
-        ],
-        'employeeDetails.type': [
-          { required: true, message: 'Employee Type is required', trigger: 'change' }
-        ],
-        'employeeDetails.skills': [
-          { required: true, type: 'array', message: 'Atleast select one skill', trigger: 'change' }
-        ],
-        'employeeDetails.salary': {
-          required: true, type: 'number', message: 'Salary is required', trigger: 'blur'
-        },
-        'bankDetails.bank': [
-          { required: true, message: 'Bank Name is required', trigger: 'blur' }
-        ],
-        'bankDetails.branch': [
-          { required: true, message: 'Branch Name is required', trigger: 'blur' }
-        ],
-        'bankDetails.accountNumber': [
-          { required: true, type: 'number', message: 'Account Number is required', trigger: 'blur' },
-          { pattern: /^\d{9,18}$/, message: 'Enter a valid account number', trigger: 'blur' }
-        ],
-        'bankDetails.ifsc': [
-          { required: true, message: 'IFSC Code is required', trigger: 'blur' },
-          { pattern: /^[A-Z]{4}0[A-Z0-9]{6}$/, message: 'Enter a valid IFSC Code', trigger: 'blur' }
-        ]
-      }
+      formRules: Constants.EMPLOYEE_FORM_RULES
     }
   },
   methods: {
     handleCancelClick() {
       this.$emit('cancel')
-    },
-    clearFields() {
-      this.$refs.formData.resetFields()
     },
     handleSaveClick() {
       this.$refs.formData.validate((valid) => {
