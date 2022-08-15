@@ -1,9 +1,9 @@
 <template>
   <el-row form-main-container>
-    <el-row class="form-header">
-      <h1>{{ isSubmit ? 'Add New Employee' : 'Edit Employee Details' }}</h1>
-    </el-row>
     <el-row class="form-container">
+      <el-row class="form-header">
+        <h1>{{ isSubmit ? 'Add New Employee' : 'Edit Employee Details' }}</h1>
+      </el-row>
       <el-form ref="formData" :rules="formRules" :model="formData">
         <el-row class="personal-information">
           <h4>Personal Information:</h4>

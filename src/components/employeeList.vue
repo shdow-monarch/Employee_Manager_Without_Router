@@ -150,7 +150,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .header-title {
   text-align: left;
 }
@@ -166,5 +166,11 @@ export default {
 
 .main-container {
   padding: 0 10px;
+}
+
+.el-dialog.is-fullscreen {
+  display: flex;
+  margin: auto;
+  place-content: center;
 }
 </style>
