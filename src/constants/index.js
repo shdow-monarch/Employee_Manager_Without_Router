@@ -56,11 +56,7 @@ const CONSTANTS = {
     'Part Time'
   ],
   EMPLOYEE_DETAIL: {
-<<<<<<< HEAD
     id: '',
-=======
-    _id: '',
->>>>>>> a7d438658fa8823a31e498d55b67da82d992d5ae
     firstName: '',
     lastName: '',
     dob: '',
