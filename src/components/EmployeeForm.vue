@@ -164,8 +164,7 @@ export default {
             payload.id = uuidv4()
           }
           this.$emit('save', payload)
-          // this.formData = Constants.EMPLOYEE_DETAIL
-          this.$refs.formData.resetFields()
+          this.$emit('cancel')
         }
         else {
           this.$message({ type: 'error', message: this.$t('formValidationMessage') })
